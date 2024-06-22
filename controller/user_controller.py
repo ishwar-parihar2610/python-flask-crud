@@ -22,4 +22,10 @@ def user_delete_controller(id):
     return obj.user_delete_controller(id)
 
 
+@appmain.route('/user/patch/<int:id>', methods=['PATCH'])
+def user_patch_controller(id):
+   
+    return obj.user_patch_model(request.form,id)
+
+
 
