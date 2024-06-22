@@ -1,7 +1,9 @@
 #User model
 import mysql.connector
 import json
+from flask import make_response
 class user_model():
+
 
     # connection String
     def __init__(self):
@@ -25,12 +27,13 @@ class user_model():
     def user_getall_model(self):
         self.cur.execute("SELECT * FROM users")
         result=self.cur.fetchall()
-      
+     
         if(len(result)>0):
-            return json.dumps(result)
-            print("result",result)
+            return make_response({"payload":result},200)
         else:
-            return "Empty Selection"
+            return  make_response({"message":"No Data Found"},204)
+        
+   
 
        
 
@@ -39,7 +42,7 @@ class user_model():
         print(data)
         self.cur.execute(f"INSERT INTO users(name,email,role,password,phone) VALUES('{data['name']}','{data['email']}','{data['role']}','{data['password']}','{data['phone']}')")
         
-        return "User Create Successfully"
+        return make_response({"message":"User Added Successfully"},201)
 
 
     #UPDATE
@@ -47,9 +50,9 @@ class user_model():
         print("update data",data)
         self.cur.execute(f"UPDATE users set name='{data['name']}',email='{data['email']}',phone='{data['phone']}',role='{data['role']}',password='{data['password']}' WHERE id={data['id']}")
         if(self.cur.rowcount>0):
-            return "User Updated Successfully"
+            return make_response({"message":"User Update Successfully"},201)
         else:
-            return "Nothing To Updated"
+            return make_response({"message":"Nothing To Updated"},202)
     
 
     #DELETE
@@ -57,6 +60,6 @@ class user_model():
         print("update data",id)
         self.cur.execute(f"DELETE FROM users WHERE id={id}")
         if(self.cur.rowcount>0):
-            return "User DELETED Successfully"
+            return make_response({"message":"User DELETED Successfully"},200)
         else:
-            return "Nothing deleted"
+            return make_response({"message":"Nothing deleted"},202)
