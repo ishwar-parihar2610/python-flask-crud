@@ -25,7 +25,7 @@ class user_model():
     
     #get
     def user_getall_model(self):
-        self.cur.execute("SELECT * FROM users")
+        self.cur.execute("SELECT * FROM users limit 3,2")
         result=self.cur.fetchall()
      
         if(len(result)>0):
@@ -83,3 +83,13 @@ class user_model():
         else:
             return make_response({"message":"Nothing To Updated"},202)
         
+     # UPDATE IMAGE   
+        
+    def user_upload_avatar_model(self, uid, filePath):
+        self.cur.execute(f"UPDATE users SET avatar='{filePath}' WHERE id={uid}")
+        if(self.cur.rowcount>0):
+            return make_response({"message":"file upload successfully"},201)
+        else:
+            return make_response({"message":"Nothing To Updated"},202)
+        
+   
